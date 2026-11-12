@@ -1,0 +1,55 @@
+name: Build IPTV Playlist
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */12 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build playlist
+        run: |
+          mkdir -p countries
+
+          curl -L https://iptv-org.github.io/iptv/countries/tj.m3u -o countries/tajikistan.m3u
+          curl -L https://iptv-org.github.io/iptv/countries/ru.m3u -o countries/russia.m3u
+          curl -L https://iptv-org.github.io/iptv/countries/uz.m3u -o countries/uzbekistan.m3u
+          curl -L https://iptv-org.github.io/iptv/countries/kz.m3u -o countries/kazakhstan.m3u
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          files = [
+              "countries/tajikistan.m3u",
+              "countries/russia.m3u",
+              "countries/uzbekistan.m3u",
+              "countries/kazakhstan.m3u"
+          ]
+
+          lines = ["#EXTM3U"]
+
+          for file in files:
+              content = Path(file).read_text(errors="ignore").splitlines()
+              lines.extend(content[1:])
+
+          Path("playlist.m3u").write_text(
+              "\n".join(lines) + "\n"
+          )
+          PY
+
+      - name: Commit playlist
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add playlist.m3u countries/
+          git diff --cached --quiet || git commit -m "Update IPTV playlist"
+          git push
