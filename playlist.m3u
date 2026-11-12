@@ -1,0 +1,17 @@
+#EXTM3U
+
+# 🇹🇯 TAJIKISTAN
+#EXTINF:-1 group-title="🇹🇯 Tajikistan",Tajikistan TV
+https://iptv-org.github.io/iptv/countries/tj.m3u
+
+# 🇷🇺 RUSSIA
+#EXTINF:-1 group-title="🇷🇺 Russia",Russia TV
+https://iptv-org.github.io/iptv/countries/ru.m3u
+
+# 🇺🇿 UZBEKISTAN
+#EXTINF:-1 group-title="🇺🇿 Uzbekistan",Uzbekistan TV
+https://iptv-org.github.io/iptv/countries/uz.m3u
+
+# 🇰🇿 KAZAKHSTAN
+#EXTINF:-1 group-title="🇰🇿 Kazakhstan",Kazakhstan TV
+https://iptv-org.github.io/iptv/countries/kz.m3u
